@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import *
+import json
 
 class Recipe:
     def __init__(self, name, ingredients, instructions):
@@ -37,6 +39,10 @@ class RecipeManagerApp:
 
         self.view_button = tk.Button(root, text="View Recipes", command=self.view_recipes)
         self.view_button.pack()
+
+        self.save_button = tk.Button(root, text="Save Recipes", command=self.save_recipes)
+        self.save_button.pack()
+
 
     def add_recipe(self):
         name = self.name_entry.get()
@@ -79,6 +85,12 @@ class RecipeManagerApp:
             instructions_text.insert(tk.END, recipe.instructions)
             instructions_text.pack()
 
+    def save_recipes(self):
+        filename = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
+        if filename:
+            with open(filename, "w") as file:
+                json.dump(self.recipes, file)
+            print(f"Recipes saved to {filename}")
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("850x450")
